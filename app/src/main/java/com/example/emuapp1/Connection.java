@@ -1,5 +1,6 @@
 package com.example.emuapp1;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -33,12 +34,13 @@ public class Connection {
     private UUID deviceUUID;
     static ProgressDialog mProgressDialog;
     private ConnectedThread mConnectedThread;
-
+    LED mLed;
 
     public Connection(Context context) {
         mContext = context;
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
     }
+
     private class AcceptThread extends Thread{
             //local server socket
             private final BluetoothServerSocket mmServerSocket;
@@ -166,6 +168,7 @@ public class Connection {
             mmInStream = tempIn;
             mmOutStream = tempOut;
         }
+
         public void run(){
             byte[] buffer = new byte[1024];
             int bytes;
@@ -174,6 +177,10 @@ public class Connection {
                     bytes = mmInStream.read(buffer);
                     String incomingMessage = new String(buffer,0,bytes);
                     Log.d(TAG, "Input Stream: " + incomingMessage);
+                    mLed.getWindow().setContentView(R.layout.activity_led);
+                    final TextView miMess = (TextView) (mLed.findViewById(R.id.iMess));
+                    miMess.setText(incomingMessage);
+
                 } catch (IOException e) {
                     Log.e(TAG,"Write: Error reading from i/p stream : "+e.getMessage());
 
