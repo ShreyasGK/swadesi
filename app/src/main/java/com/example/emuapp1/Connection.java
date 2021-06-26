@@ -7,11 +7,14 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Message;
 import android.util.Log;
 import android.widget.TextView;
+
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,7 +37,6 @@ public class Connection {
     private UUID deviceUUID;
     static ProgressDialog mProgressDialog;
     private ConnectedThread mConnectedThread;
-    LED mLed;
 
     public Connection(Context context) {
         mContext = context;
@@ -177,10 +179,10 @@ public class Connection {
                     bytes = mmInStream.read(buffer);
                     String incomingMessage = new String(buffer,0,bytes);
                     Log.d(TAG, "Input Stream: " + incomingMessage);
-                    mLed.getWindow().setContentView(R.layout.activity_led);
-                    final TextView miMess = (TextView) (mLed.findViewById(R.id.iMess));
-                    miMess.setText(incomingMessage);
 
+                    Intent incomingMessageIntent = new Intent(incomingMessage);
+                    incomingMessageIntent.putExtra("theMessage",incomingMessage);
+                    LocalBroadcastManager.getInstance(mContext).sendBroadcast(incomingMessageIntent);
                 } catch (IOException e) {
                     Log.e(TAG,"Write: Error reading from i/p stream : "+e.getMessage());
 
