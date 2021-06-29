@@ -19,7 +19,6 @@ import java.io.IOException;
 
 public class LED extends AppCompatActivity {
     TextView miMess;
-    Connection mBluetoothConnection;
     StringBuilder messages;
 
     @Override
