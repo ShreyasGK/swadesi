@@ -12,7 +12,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.nio.charset.Charset;
-import java.nio.charset.Charset;
+
 
 public class Sensors extends AppCompatActivity implements SensorEventListener{
 

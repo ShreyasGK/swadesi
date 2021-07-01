@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Message;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -28,7 +29,7 @@ public class Connection {
     private static final String TAG = "ConnectionServ";
     private static final String appName = "Emulator";
     private static final UUID MY_UUID_INSECURE =
-            UUID.fromString("8ce255c0-200a-11e0-ac64-0800200c9a66");
+            UUID.fromString("d4196604-31ee-483e-80b1-28ea37ad3a77");
     private final BluetoothAdapter mBluetoothAdapter;
     Context mContext;
     private AcceptThread mInSecureAcceptThread;
@@ -38,9 +39,11 @@ public class Connection {
     static ProgressDialog mProgressDialog;
     private ConnectedThread mConnectedThread;
 
+
     public Connection(Context context) {
         mContext = context;
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        start();
     }
 
     private class AcceptThread extends Thread{
@@ -51,10 +54,10 @@ public class Connection {
                 BluetoothServerSocket tmp = null;
                 //new listening server socket
             try{
-                tmp = mBluetoothAdapter.listenUsingInsecureRfcommWithServiceRecord(appName,MY_UUID_INSECURE);
+                tmp = mBluetoothAdapter.listenUsingRfcommWithServiceRecord(appName,MY_UUID_INSECURE);
                 Log.d(TAG,"AcceptThread: Setting up server using: "+MY_UUID_INSECURE);
             } catch (IOException e) {
-                e.printStackTrace();
+                Log.e(TAG,"AcceptThread: Unable to accept: "+e.getMessage());
             }
             mmServerSocket = tmp;
             }
@@ -62,10 +65,11 @@ public class Connection {
                 Log.d(TAG,"run: AcceptThread Running");
                 BluetoothSocket socket = null;
                 try{
-                    Log.d(TAG,"run: RFCOMM server socket start");
+                    Log.d(TAG,"run: RFCOMM server socket start....");
                     socket = mmServerSocket.accept();
+                    Log.d(TAG,"run: RFCOMM server socket started connection");
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    Log.e(TAG,"AcceptThread: Unable to accept: "+e.getMessage());
                 }
                 if (socket != null){
                     connected(socket,mmDevice);
@@ -77,10 +81,10 @@ public class Connection {
                 try{
                     mmServerSocket.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    Log.e(TAG,"cancel: Close of acceptthread failed"+e.getMessage());
                 }
             }
-    }
+        }
 
     private class ConnectThread extends Thread{
         private BluetoothSocket mmSocket;
@@ -98,22 +102,22 @@ public class Connection {
                 Log.d(TAG,"ConnectThread: Trying to create InsecureRfcommSocket using UUID:"+MY_UUID_INSECURE);
                 tmp = mmDevice.createRfcommSocketToServiceRecord(deviceUUID);
             } catch (IOException e) {
-                e.printStackTrace();
+                Log.e(TAG,"ConnectThread: Could not create InsecureRfCommSocket");
             }
             mmSocket = tmp;
-
             mBluetoothAdapter.cancelDiscovery();
+
             try {
                 mmSocket.connect();
-                Log.d(TAG,"run:ConnectThread connected");
+                Log.d(TAG, "run: ConnectThread connected."+mmSocket.isConnected());
             } catch (IOException e) {
-                try{
+                try {
                     mmSocket.close();
-                    Log.d(TAG,"run:SocketClosed");
-                } catch (IOException ioException) {
-                    Log.d(TAG,"run:ConnectThread unable to connect");
+                    Log.d(TAG, "run: Closed Socket.");
+                } catch (IOException e1) {
+                    Log.e(TAG, "mConnectThread: run: Unable to close connection in socket " + e1.getMessage());
                 }
-                Log.d(TAG,"run:ConnectThread unable to connect to uuid");
+                Log.d(TAG, "run: ConnectThread: Could not connect to UUID: " + MY_UUID_INSECURE );
             }
             connected(mmSocket,mmDevice);
         }
@@ -159,7 +163,11 @@ public class Connection {
             InputStream tempIn = null;
             OutputStream tempOut = null;
 
-            mProgressDialog.dismiss();
+            try{
+                mProgressDialog.dismiss();
+            } catch (NullPointerException e){
+                e.printStackTrace();
+            }
 
             try{
                 tempIn = mmSocket.getInputStream();
@@ -174,17 +182,17 @@ public class Connection {
         public void run(){
             byte[] buffer = new byte[1024];
             int bytes;
-            while(true){
+            while (true){
                 try{
                     bytes = mmInStream.read(buffer);
                     String incomingMessage = new String(buffer,0,bytes);
                     Log.d(TAG, "Input Stream: " + incomingMessage);
 
-                    Intent incomingMessageIntent = new Intent(incomingMessage);
+                    Intent incomingMessageIntent = new Intent("incomingMessage");
                     incomingMessageIntent.putExtra("theMessage",incomingMessage);
                     LocalBroadcastManager.getInstance(mContext).sendBroadcast(incomingMessageIntent);
                 } catch (IOException e) {
-                    Log.e(TAG,"Write: Error reading from i/p stream : "+e.getMessage());
+                    Log.e(TAG,"RUN: Error reading from i/p stream : "+e.getMessage());
 
                     break;
                 }

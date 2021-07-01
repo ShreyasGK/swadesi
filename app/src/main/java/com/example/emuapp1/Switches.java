@@ -12,14 +12,6 @@ import java.nio.charset.Charset;
 public class Switches extends AppCompatActivity {
     Connection mBluetoothConnection;
     Switch mSwitch1,mSwitch2,mSwitch3,mSwitch4;
-    static final String st1="Switch 1 is on";
-    static final String st2="Switch 2 is on";
-    static final String st3="Switch 3 is on";
-    static final String st4="Switch 4 is on";
-    static final String st11="Switch 1 is off";
-    static final String st21="Switch 2 is off";
-    static final String st31="Switch 3 is off";
-    static final String st41="Switch 4 is off";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,11 +27,11 @@ public class Switches extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (mSwitch1.isChecked()){
-                    byte[] bytes = st1.toString().getBytes(Charset.defaultCharset());
+                    byte[] bytes = "1111".getBytes(Charset.defaultCharset());
                     mBluetoothConnection.write(bytes);
                     showToast("Switch 1 is on");
                 } else {
-                    byte[] bytes = st11.toString().getBytes(Charset.defaultCharset());
+                    byte[] bytes = "1000".getBytes(Charset.defaultCharset());
                     mBluetoothConnection.write(bytes);
                     showToast("Switch 1 is off");
                 }
@@ -49,11 +41,11 @@ public class Switches extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (mSwitch2.isChecked()){
-                    byte[] bytes = st2.toString().getBytes(Charset.defaultCharset());
+                    byte[] bytes = "2222".getBytes(Charset.defaultCharset());
                     mBluetoothConnection.write(bytes);
                     showToast("Switch 2 is on");
                 } else {
-                    byte[] bytes = st21.toString().getBytes(Charset.defaultCharset());
+                    byte[] bytes = "2000".getBytes(Charset.defaultCharset());
                     mBluetoothConnection.write(bytes);
                     showToast("Switch 2 is off");
                 }
@@ -63,11 +55,11 @@ public class Switches extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (mSwitch3.isChecked()){
-                    byte[] bytes = st3.toString().getBytes(Charset.defaultCharset());
+                    byte[] bytes = "3333".getBytes(Charset.defaultCharset());
                     mBluetoothConnection.write(bytes);
                     showToast("Switch 3 is on");
                 } else {
-                    byte[] bytes = st31.toString().getBytes(Charset.defaultCharset());
+                    byte[] bytes = "3000".getBytes(Charset.defaultCharset());
                     mBluetoothConnection.write(bytes);
                     showToast("Switch 3 is off");
                 }
@@ -77,11 +69,11 @@ public class Switches extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (mSwitch4.isChecked()){
-                    byte[] bytes = st4.toString().getBytes(Charset.defaultCharset());
+                    byte[] bytes = "4444".getBytes(Charset.defaultCharset());
                     mBluetoothConnection.write(bytes);
                     showToast("Switch 4 is on");
                 } else {
-                    byte[] bytes = st41.toString().getBytes(Charset.defaultCharset());
+                    byte[] bytes = "4000".getBytes(Charset.defaultCharset());
                     mBluetoothConnection.write(bytes);
                     showToast("Switch 4 is off");
                 }

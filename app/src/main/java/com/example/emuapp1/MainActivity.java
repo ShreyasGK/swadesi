@@ -33,12 +33,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     Button mLedInfo,mSwitchInfo,mSensorInfo;
     Button btnStartConnection;
 
-    //Button btnSend;
-
+    //Button btnSend
     //EditText etSend;
 
     private static final UUID MY_UUID_INSECURE =
-            UUID.fromString("8ce255c0-200a-11e0-ac64-0800200c9a66");
+            UUID.fromString("d4196604-31ee-483e-80b1-28ea37ad3a77");
 
     BluetoothDevice mBTDevice;
 
@@ -356,8 +355,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Log.d(TAG, "onItemClick: deviceName = " + deviceName);
         Log.d(TAG, "onItemClick: deviceAddress = " + deviceAddress);
 
-        //create the bond.
-        //NOTE: Requires API 17+? I think this is JellyBean
+
         if(Build.VERSION.SDK_INT > Build.VERSION_CODES.JELLY_BEAN_MR2){
             Log.d(TAG, "Trying to pair with " + deviceName);
             mBTDevices.get(i).createBond();
