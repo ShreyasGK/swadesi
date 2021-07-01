@@ -190,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         mLedInfo = (Button) findViewById(R.id.ledInfo);
         mSwitchInfo = (Button) findViewById(R.id.switchInfo);
-        mSensorInfo = (Button) findViewById(R.id.sensorInfo);
+       // mSensorInfo = (Button) findViewById(R.id.sensorInfo);
 
 
         mLedInfo.setOnClickListener(new View.OnClickListener() {
