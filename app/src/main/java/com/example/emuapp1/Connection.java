@@ -186,14 +186,47 @@ public class Connection {
                 try{
                     bytes = mmInStream.read(buffer);
                     String incomingMessage = new String(buffer,0,bytes);
-                    Log.d(TAG, "Input Stream: " + incomingMessage);
 
+                    switch (incomingMessage){
+                        case "1000":
+                            incomingMessage = "LED 1 is OFF";
+                            break;
+                        case "1111":
+                            incomingMessage = "LED 1 is ON";
+                            break;
+
+                        case "2000":
+                            incomingMessage = "LED 2 is OFF";
+                            break;
+                        case "2222":
+                            incomingMessage = "LED 2 is ON";
+                            break;
+
+                        case "3000":
+                            incomingMessage = "LED 3 is OFF";
+                            break;
+                        case "3333":
+                            incomingMessage = "LED 3 is ON";
+                            break;
+
+                        case "4000":
+                            incomingMessage = "LED 4 is OFF";
+                            break;
+                        case "4444":
+                            incomingMessage = "LED 4 is ON";
+                            break;
+
+                        default: incomingMessage = new String(buffer,0,bytes);
+                            break;
+
+                    }
+
+                    Log.d(TAG, "Input Stream: " + incomingMessage);
                     Intent incomingMessageIntent = new Intent("incomingMessage");
                     incomingMessageIntent.putExtra("theMessage",incomingMessage);
                     LocalBroadcastManager.getInstance(mContext).sendBroadcast(incomingMessageIntent);
                 } catch (IOException e) {
                     Log.e(TAG,"RUN: Error reading from i/p stream : "+e.getMessage());
-
                     break;
                 }
             }

@@ -205,12 +205,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 openSwitches();
             }
         });
-        mSensorInfo.setOnClickListener(new View.OnClickListener() {
+        /*mSensorInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openSensor();
             }
-        });
+        });*/
 
         //Broadcasts when bond state changes (ie:pairing)
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
@@ -372,8 +372,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Intent intent = new Intent(this, Switches.class);
         startActivity(intent);
     }
-    public void openSensor(){
+    /*public void openSensor(){
         Intent intent = new Intent(this, Sensors.class);
         startActivity(intent);
-    }
+    }*/
 }
