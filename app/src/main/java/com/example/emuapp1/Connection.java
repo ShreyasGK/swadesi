@@ -29,7 +29,7 @@ public class Connection {
     private static final String TAG = "ConnectionServ";
     private static final String appName = "Emulator";
     private static final UUID MY_UUID_INSECURE =
-            UUID.fromString("d4196604-31ee-483e-80b1-28ea37ad3a77");
+            UUID.fromString("9cdcb420-39dd-43e8-b7df-ade981893896");
     private final BluetoothAdapter mBluetoothAdapter;
     Context mContext;
     private AcceptThread mInSecureAcceptThread;
@@ -100,7 +100,7 @@ public class Connection {
 
             try{
                 Log.d(TAG,"ConnectThread: Trying to create InsecureRfcommSocket using UUID:"+MY_UUID_INSECURE);
-                tmp = mmDevice.createRfcommSocketToServiceRecord(deviceUUID);
+                tmp = mmDevice.createInsecureRfcommSocketToServiceRecord(deviceUUID);
             } catch (IOException e) {
                 Log.e(TAG,"ConnectThread: Could not create InsecureRfCommSocket");
             }
